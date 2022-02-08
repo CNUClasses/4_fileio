@@ -15,14 +15,14 @@ using namespace std;
  const int 	SUCCESS				= 0;
  const int 	COULD_NOT_OPEN_FILE = -1;
 
-int writeFile() {
+int writeFile(string &info) {
 	ofstream myOutputfile;
 	myOutputfile.open(MYFILE.c_str());	//could open with  flags myfile.open(MYFILE, ios::out)
 										//note the .c_str() call on MYFILE
 	if (!myOutputfile.is_open())
 			return COULD_NOT_OPEN_FILE;
 
-	myOutputfile << "Data for a file.\n";
+	myOutputfile << info;
 
 	//delicate, what if exception is thrown after file is opened
 	//but before next line?
@@ -32,12 +32,12 @@ int writeFile() {
 	return SUCCESS;
 }
 
-int readFile(){
+int readFile(string fn){
 	ifstream myInputfile;
-	myInputfile.open(MYFILE.c_str());	//could open with  flags myfile.open(MYFILE, ios::in)
+	myInputfile.open(fn.c_str());	//could open with  flags myfile.open(MYFILE, ios::in)
 												//note the .c_str() call on MYFILE
 	if (!myInputfile.is_open())
-			return COULD_NOT_OPEN_FILE;
+		return COULD_NOT_OPEN_FILE;
 
 	//read and count the data
 	std::string line;
@@ -54,19 +54,17 @@ int readFile(){
 	return SUCCESS;
 }
 
-
 int main() {
 	cout << "Writing to a file"<<endl;
-	int res = writeFile();
-	if(res == COULD_NOT_OPEN_FILE)
-		cout << "Writing to a file"<<endl;
+	string ms="some info";
+	int res = writeFile(ms);
+	if(res != SUCCESS)
+		return res;
 
 
-	cout << "Reading following string from a file"<<endl;
-	res = readFile();
-	if(res == COULD_NOT_OPEN_FILE)
-		cout << "Writing to a file"<<endl;
-
+	cout << "Reading a string from a file"<<endl;
+	res = readFile(MYFILE);
+	return res;
 }
 
 
